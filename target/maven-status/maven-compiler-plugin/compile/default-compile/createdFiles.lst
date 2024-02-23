@@ -1,0 +1,6 @@
+com/hr/portal/model/Employee.class
+com/hr/portal/service/EmployeeService.class
+com/hr/portal/HREmployeeInventoryWebapp.class
+com/hr/portal/service/EmployeeServiceImpl.class
+com/hr/portal/repository/EmployeeRepository.class
+com/hr/portal/controller/EmployeeController.class

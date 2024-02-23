@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hrportal
+  labels:
+    app: hrportal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hrportal
+  template:
+    metadata:
+      labels:
+        app: hrportal
+    spec:
+      containers:
+      - name: hrportal
+        image: 193.53.98.180:5000/hrportal:local
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: privatecred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hrportal-service
+spec:
+  selector:
+    app: hrportal
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30000
