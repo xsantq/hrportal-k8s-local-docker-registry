@@ -6,6 +6,7 @@ SSL and TLS connection wit registry. A basic authentication feature also needed(
 
 Step-1: Setup Self Signed Certificate 
     - Create a conf file like that: 
+    
       [req]
       default_bits = 4096
       default_md = sha256
