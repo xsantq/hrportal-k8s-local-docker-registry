@@ -30,7 +30,7 @@ Step-1: Setup Self Signed Certificate
 
 CN field and alt_names sections are important and must be the IP adress of the docker registry server. save file as san.cfg 
 
-- Generate key with following command. Give the config file parameter -congig san.cfg:
+- Generate key with following command. Give the created file(san.cfg) as config parameter with flag -config:
 
       $mkdir -p docker_reg_certs
 
