@@ -105,7 +105,7 @@ Step-5 Use your private local registry in K8S
                 
 Apply it and create deployment. 
        
-       $kubectl create -f deplpyment.yaml
+       $kubectl create -f deployment.yaml
 
 Check your logs to verify that pod will pull the image from your local private registry
        
