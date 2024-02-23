@@ -34,7 +34,7 @@ CN field and alt_names sections are important and must be the IP adress of the d
 
       $mkdir -p docker_reg_certs
 
-openssl req  -newkey rsa:4096 -nodes -sha256 -keyout docker_reg_certs/domain.key -x509 -days 365 -out docker_reg_certs/domain.crt config <path/to/req/file/from/above>
+      $openssl req  -newkey rsa:4096 -nodes -sha256 -keyout docker_reg_certs/domain.key -x509 -days 365 -out docker_reg_certs/domain.crt config <path/to/req/file/from/above>
 
 - verify the certficate: 
 
