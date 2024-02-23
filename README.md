@@ -30,16 +30,21 @@ Step-1: Setup Self Signed Certificate
 CN field and alt_names sections are important and must be the IP adress of the docker registry server. save file as san.cfg 
 
 - Generate key with following command:
-mkdir -p docker_reg_certs
+
+      $mkdir -p docker_reg_certs
+
 openssl req  -newkey rsa:4096 -nodes -sha256 -keyout docker_reg_certs/domain.key -x509 -days 365 -out docker_reg_certs/domain.crt config <path/to/req/file/from/above>
 
 - verify the certficate: 
-openssl s_client -connect localhost:5000 -showcerts </dev/null
+
+      $openssl s_client -connect localhost:5000 -showcerts </dev/null
+
 If you see the  verification:OK, you can install the certificates to Docker registry. 
 
 Step-3: User Authentication for Docker Registry:
 
 This is a container iorder to create username and password for docker registry. 
+        
         $mkdir docker_reg_auth
         $docker run -it --entrypoint htpasswd -v $PWD/docker_reg_auth:/auth -w /auth registry:2 -Bbc /auth/htpasswd admin password
         $service docker restart
@@ -66,40 +71,41 @@ Step-4 Test the repository with pull and push:
 
 Step-5 Use your private local registry in K8S
 
-- create a secret for local registry authentication in k8s cluster. Use admin password given previously.  
+- create a secret for local registry authentication in k8s cluster. Use admin password given previously.
+  
        $kubectl create secret docker-registry regcred --docker-server=<your-registry-server> --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>
 
 - create a deployment manifest that uses this secret in container spec. and image section must be indicate  your private local docker and image. 
 
-
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: hrportal
-  labels:
-    app: hrportal
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: hrportal
-  template:
-    metadata:
-      labels:
-        app: hrportal
-    spec:
-      containers:
-      - name: hrportal
-        image: ip_address:5000/hrportal:local
-        ports:
-        - containerPort: 8080
-      imagePullSecrets:
-      - name: privatecred
-
-
+                apiVersion: apps/v1
+                kind: Deployment
+                metadata:
+                  name: hrportal
+                  labels:
+                    app: hrportal
+                spec:
+                  replicas: 1
+                  selector:
+                    matchLabels:
+                      app: hrportal
+                  template:
+                    metadata:
+                      labels:
+                        app: hrportal
+                    spec:
+                      containers:
+                      - name: hrportal
+                        image: ip_address:5000/hrportal:local
+                        ports:
+                        - containerPort: 8080
+                      imagePullSecrets:
+                      - name: privatecred
+                
+                
 Apply it and create deployment. 
+       
        $kubectl create -f deplpyment.yaml
 
 Check your logs to verify that pod will pull the image from your local private registry
+       
        $kubectl  describe po <pod_name>
