@@ -70,6 +70,9 @@ Step-4 Test the repository with pull and push:
 
        $ $curl -u admin:password -v -X GET https://ip_address:5000/v2/_catalog
 
+
+IMPORTANT: RESTART YOUR WORKER NODE AFTER CERTIFICATE INSTALLATION. Old certificate maybe cached in CRI of the node, and this will lead to certificate errors while pod trying to pull image from local registry.
+
 Step-5 Use your private local registry in K8S
 
 - create a secret for local registry authentication in k8s cluster. Use admin password given previously.
@@ -110,3 +113,5 @@ Apply it and create deployment.
 Check your logs to verify that pod will pull the image from your local private registry
        
        $kubectl  describe po <pod_name>
+
+IPMD
