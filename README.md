@@ -44,7 +44,8 @@ If you see the  verification:OK, you can install the certificates to Docker regi
 
 Step-2: Copy certificate both worker nodes:
 
-    $mkdir -p /etc/docker/certs.d/ip_address:5000$cp docker_reg_certs/domain.crt /etc/docker/certs.d/ip_address:5000/ca.crt
+    $mkdir -p /etc/docker/certs.d/ip_address:5000
+    $cp docker_reg_certs/domain.crt /etc/docker/certs.d/ip_address:5000/ca.crt
     $cp docker_reg_certs/domain.crt /usr/local/share/ca-certificates/ca.crt
     $update-ca-certificates
 
