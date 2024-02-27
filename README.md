@@ -42,19 +42,25 @@ CN field and alt_names sections are important and must be the IP adress of the d
 
 If you see the  verification:OK, you can install the certificates to Docker registry. 
 
+Step-2: Copy certificate both worker nodes:
+
+    $mkdir -p /etc/docker/certs.d/ip_address:5000$cp docker_reg_certs/domain.crt /etc/docker/certs.d/ip_address:5000/ca.crt
+    $cp docker_reg_certs/domain.crt /usr/local/share/ca-certificates/ca.crt
+    $update-ca-certificates
+
 Step-3: User Authentication for Docker Registry:
 
 This is a container iorder to create username and password for docker registry. 
         
         $mkdir docker_reg_auth
-        $docker run -it --entrypoint htpasswd -v $PWD/docker_reg_auth:/auth -w /auth registry:2 -Bbc /auth/htpasswd admin password
+        $docker run -it --entrypoint htpasswd -v $PWD/docker_reg_auth:/auth -w /auth registry:2 -Bbc /auth/htpasswd admin password5
         $service docker restart
 
-Step-3 Starting the Docker Registry Container: 
+Step-4 Starting the Docker Registry Container: 
 
         $docker run -d -p 5000:5000 --restart=always --name registry -v $PWD/docker_reg_certs:/certs -v $PWD/docker_reg_auth:/auth -v /reg:/var/lib/registry -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd -e REGISTRY_AUTH=htpasswd registry:2.7.0
 
-Step-4 Test the repository with pull and push:
+Step-5 Test the repository with pull and push:
 
 -First tag your local image:
 
@@ -73,7 +79,7 @@ Step-4 Test the repository with pull and push:
 
 IMPORTANT: RESTART YOUR WORKER NODE AFTER CERTIFICATE INSTALLATION. Old certificate maybe cached in CRI of the node, and this will lead to certificate errors while pod trying to pull image from local registry.
 
-Step-5 Use your private local registry in K8S
+Step-6 Use your private local registry in K8S
 
 - create a secret for local registry authentication in k8s cluster. Use admin password given previously.
   
